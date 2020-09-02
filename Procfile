@@ -1,1 +1,1 @@
-web: ./build/install/srvg-tribuna/bin/srvg-tribuna
+web: ./build/install/tribuna/bin/tribuna
