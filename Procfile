@@ -1,0 +1,1 @@
+web: ./build/install/srvg-tribuna/bin/srvg-tribuna
