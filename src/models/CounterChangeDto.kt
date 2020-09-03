@@ -1,4 +1,4 @@
-package com.minnullin.models
+package com.tribuna.models
 
 import kotlinx.serialization.Serializable
 

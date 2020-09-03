@@ -1,5 +1,5 @@
-package com.minnullin.models
+package com.tribuna.models
 
 enum class CounterType {
-    Like,Dislike,Comment,Share
+    Like,Dislike
 }

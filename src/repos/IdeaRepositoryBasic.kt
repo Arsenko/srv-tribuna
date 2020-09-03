@@ -1,4 +1,7 @@
-import com.minnullin.models.*
+package com.tribuna.repos
+
+import com.tribuna.models.CounterChangeDto
+import com.tribuna.models.Idea
 import com.tribuna.models.IdeaDto
 import io.ktor.features.NotFoundException
 import io.ktor.http.HttpStatusCode
@@ -9,43 +12,52 @@ import java.util.*
 class IdeaRepositoryBasic : IdeaRepository {
     private var id: Int = 3
     private val mutex = Mutex()
-    private var idealist = mutableListOf<IdeaDto>(
-        IdeaDto(
-            0,
-            "Mars",
-            "I'm chocolate",
-            Date(),
-            null,
-            byteArrayOf()
-        ),
-        IdeaDto(
-            1,
-            "KitKat",
-            "I'm chocolate",
-            Date(),
-            null,
-            byteArrayOf()
-        ),
-        IdeaDto(
-            2,
-            "Milka",
-            "I'm chocolate",
-            Date(),
-            null,
-            byteArrayOf()
-        ),
-        IdeaDto(
-            3,
-            "Twix",
-            "I'm chocolate",
-            Date(),
-            "https://animego.org/anime/vnuk-mudreca-k945",
-            byteArrayOf()
-        )
+    private var idealist = mutableListOf(
+            Idea(
+                    0,
+                    "Mars",
+                    "I'm chocolate",
+                    Date(),
+                    null,
+                    byteArrayOf(),
+                    mutableListOf("KitKat"),
+                    mutableListOf("Milka")
+            ),
+            Idea(
+                    1,
+                    "KitKat",
+                    "I'm chocolate",
+                    Date(),
+                    null,
+                    byteArrayOf(),
+                    mutableListOf("KitKat"),
+                    mutableListOf("Milka")
+            ),
+            Idea(
+                    2,
+                    "Milka",
+                    "I'm chocolate",
+                    Date(),
+                    null,
+                    byteArrayOf(),
+                    mutableListOf("KitKat"),
+                    mutableListOf("Milka")
+            ),
+            Idea(
+                    3,
+                    "Twix",
+                    "I'm chocolate",
+                    Date(),
+                    "https://animego.org/anime/vnuk-mudreca-k945",
+                    byteArrayOf(),
+                    mutableListOf("KitKat"),
+                    mutableListOf("Milka")
+            )
     )
 
-    override suspend fun getAll(): List<IdeaDto> {
-        return idealist.toList()
+    override suspend fun getAll(username:String): List<IdeaDto> {
+        val temp=idealist.toList()
+        return temp.map { Idea.generateModel(it,username) }
     }
 
     private suspend fun getAutoIncrementedId(): Int {
@@ -56,13 +68,15 @@ class IdeaRepositoryBasic : IdeaRepository {
     }
 
     override suspend fun addIdea(idea: IdeaDto): HttpStatusCode {
-        val ideaWithId = IdeaDto(
-            id = getAutoIncrementedId(),
-            authorName = idea.authorName,
-            ideaText = idea.ideaText,
-            ideaDate = idea.ideaDate,
-            link = idea.link,
-            ideaDrawable = idea.ideaDrawable
+        val ideaWithId = Idea(
+                id = getAutoIncrementedId(),
+                authorName = idea.authorName,
+                ideaText = idea.ideaText,
+                ideaDate = idea.ideaDate,
+                link = idea.link,
+                ideaDrawable = idea.ideaDrawable,
+                ideaSupportUsernames= mutableListOf(),
+                ideaHaterUsernames = mutableListOf()
         )
         idealist.add(ideaWithId)
         return HttpStatusCode.Accepted
@@ -88,9 +102,9 @@ class IdeaRepositoryBasic : IdeaRepository {
         }
     }
 
-    override suspend fun getById(id: Int): IdeaDto {
+    override suspend fun getById(id: Int,username: String): IdeaDto {
         mutex.withLock {
-            var ideaToReturn: IdeaDto? = null
+            var ideaToReturn: Idea? = null
             for (i in 0 until idealist.size) {
                 if (id == idealist[i].id) {
                     ideaToReturn = idealist[i]
@@ -99,13 +113,13 @@ class IdeaRepositoryBasic : IdeaRepository {
             if (ideaToReturn == null) {
                 throw NotFoundException()
             }
-            return ideaToReturn
+            return Idea.generateModel(ideaToReturn,username)
         }
     }
 
     override suspend fun changeIdeaCounter(model: CounterChangeDto, login: String): IdeaDto {
         mutex.withLock {
-            return getById(model.id)
+            return getById(model.id,login)
         }
     }
 }

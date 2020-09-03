@@ -1,10 +1,9 @@
-package com.minnullin.service
+package com.tribuna.service
 
-import JWTTokenService
 import com.tribuna.exceptions.AlreadyExistException
 import com.tribuna.exceptions.InvalidPasswordException
 import com.tribuna.exceptions.PasswordChangeException
-import com.minnullin.repos.UserRepository
+import com.tribuna.repos.UserRepository
 import com.tribuna.models.*
 import io.ktor.features.NotFoundException
 import kotlinx.coroutines.sync.Mutex
@@ -14,9 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder
 val mutex= Mutex()
 
 class UserService(
-    private val repos: UserRepository,
-    private val tokenService: JWTTokenService,
-    private val passwordEncoder: PasswordEncoder
+        private val repos: UserRepository,
+        private val tokenService: JWTTokenService,
+        private val passwordEncoder: PasswordEncoder
 ) {
 
     suspend fun getModelById(id: Int): User? {
@@ -52,10 +51,8 @@ class UserService(
     suspend fun registration(input: AuthenticationInDto): AuthenticationOutDto?{
         return if(repos.getByUsername(input.username)!=null){
             throw AlreadyExistException("username already exist")
-            null
         }else {
-            this.save(input.username,input.password)
-            return this.authenticate(input)
+            this.authenticate(input)
         }
     }
 
@@ -63,6 +60,12 @@ class UserService(
         mutex.withLock {
             repos.save(User(username = username, password = passwordEncoder.encode(password)))
             return tokenService.generate(repos.getByUsername(username)!!.id)
+        }
+    }
+
+    suspend fun getAuthorByUsername(username: String):Author?{
+        mutex.withLock {
+            return repos.getAuthor(username)
         }
     }
 

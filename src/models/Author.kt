@@ -3,6 +3,6 @@ package com.tribuna.models
 class Author(
     val authorName:String,
     val authorDrawable: ByteArray,
-    val authorStatus:Boolean //false=hater, null=neutral, true=promoter
+    var authorStatus:Int // like>dislike*2, like>1=promouter
 ) {
 }

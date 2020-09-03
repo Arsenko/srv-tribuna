@@ -1,13 +1,12 @@
 package com.tribuna
 
-import IdeaRepository
-import IdeaRepositoryBasic
-import JWTTokenService
-import com.minnullin.repos.UserRepository
-import com.minnullin.repos.UserRepositoryBasic
-import com.minnullin.service.FileService
-import com.minnullin.service.IdeaService
-import com.minnullin.service.UserService
+import com.tribuna.repos.IdeaRepository
+import com.tribuna.repos.IdeaRepositoryBasic
+import com.tribuna.service.JWTTokenService
+import com.tribuna.repos.UserRepository
+import com.tribuna.repos.UserRepositoryBasic
+import com.tribuna.service.IdeaService
+import com.tribuna.service.UserService
 import com.tribuna.routing.RoutingV1
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -16,18 +15,15 @@ import io.ktor.features.*
 import io.ktor.gson.*
 import io.ktor.http.*
 import io.ktor.response.*
-import io.ktor.request.*
 import io.ktor.routing.*
 import kotlinx.coroutines.runBlocking
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.eagerSingleton
 import org.kodein.di.generic.instance
-import org.kodein.di.generic.with
 import org.kodein.di.ktor.KodeinFeature
 import org.kodein.di.ktor.kodein
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
-import javax.naming.ConfigurationException
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -36,7 +32,7 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 fun Application.module(testing: Boolean = false) {
     install(KodeinFeature) {
         bind<IdeaService>() with eagerSingleton { IdeaService(instance()) }
-        bind<IdeaRepository>() with eagerSingleton {IdeaRepositoryBasic()}
+        bind<IdeaRepository>() with eagerSingleton { IdeaRepositoryBasic() }
         bind<PasswordEncoder>() with eagerSingleton { BCryptPasswordEncoder() }
         bind<JWTTokenService>() with eagerSingleton { JWTTokenService() }
         bind<UserRepository>() with eagerSingleton { UserRepositoryBasic() }

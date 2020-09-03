@@ -1,12 +1,13 @@
-
-import com.minnullin.models.*
+package com.tribuna.repos
+import com.tribuna.models.CounterChangeDto
+import com.tribuna.models.Idea
 import com.tribuna.models.IdeaDto
 import io.ktor.http.HttpStatusCode
 
 interface IdeaRepository{
-    suspend fun getAll():List<IdeaDto>
-    suspend fun changeIdeaCounter(model:CounterChangeDto,login:String): IdeaDto
+    suspend fun getAll(username:String): List<IdeaDto>
+    suspend fun changeIdeaCounter(model: CounterChangeDto, login:String): IdeaDto
     suspend fun addIdea(idea: IdeaDto): HttpStatusCode
     suspend fun deleteById(id:Int,authorName:String):HttpStatusCode
-    suspend fun getById(id:Int): IdeaDto
+    suspend fun getById(id:Int,username: String): IdeaDto
 }
