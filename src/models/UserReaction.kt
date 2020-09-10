@@ -1,6 +1,5 @@
 package com.tribuna.models
 
-import com.tribuna.com.tribuna.models.UserReactionDto
 import java.util.*
 
 class UserReaction(
@@ -16,7 +15,7 @@ class UserReaction(
                     it.authorName==listOfReaction[i].authorName
                 }
                 if(temp!=null){
-                    result!!.add(UserReactionDto(temp,listOfReaction[i].promoted,listOfReaction[i].date))
+                    result!!.add(UserReactionDto(AuthorDto.generateDto(temp),listOfReaction[i].promoted,listOfReaction[i].date))
                 }
             }
             return result!!.toList()
