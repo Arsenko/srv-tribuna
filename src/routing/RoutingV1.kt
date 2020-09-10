@@ -22,15 +22,15 @@ class RoutingV1(
         private val ideaService: IdeaService,
         private val userService: UserService
 ) {
-    fun setup(configuration: Routing){
-        with(configuration){
+    fun setup(configuration: Routing) {
+        with(configuration) {
             route("/api/v1/") {
                 post("/registration") {
-                    val input=call.receive<AuthenticationInDto>()
-                    val response=userService.registration(input)
-                    if(response!=null){
+                    val input = call.receive<AuthenticationInDto>()
+                    val response = userService.registration(input)
+                    if (response != null) {
                         call.respond(response)
-                    }else{
+                    } else {
                         call.respond("username already exist")
                     }
                 }
@@ -59,10 +59,10 @@ class RoutingV1(
                 route("/api/v1/idea/{id}") {
                     get {
                         val id = call.parameters["id"]?.toIntOrNull() ?: throw ParameterConversionException(
-                            "id",
-                            "Int"
+                                "id",
+                                "Int"
                         )
-                        val response = ideaService.getById(id,call.authentication.principal<User>()!!.name)
+                        val response = ideaService.getById(id, call.authentication.principal<User>()!!.name)
                         if (response != null) {
                             call.respond(response)
                         } else {
@@ -74,24 +74,24 @@ class RoutingV1(
                 route("/api/v1/idea/{id}/delete") {
                     get {
                         val id = call.parameters["id"]?.toIntOrNull() ?: throw ParameterConversionException(
-                            "id",
-                            "Int"
+                                "id",
+                                "Int"
                         )
                         call.respond(ideaService.deleteById(id, call.authentication.principal<User>()!!.name))
                     }
                 }
 
-                route("/api/v1/author/{username}"){
-                    post{
-                        val username= call.parameters["username"]
-                        if(username!=null) {
+                route("/api/v1/author/") {
+                    get {
+                        val username = call.authentication.principal<User>()!!.name
+                        if (username != null) {
                             val temp = userService.getAuthorByUsername(username)
-                            if(temp!=null) {
+                            if (temp != null) {
                                 call.respond(temp)
-                            }else{
+                            } else {
                                 call.respond(HttpStatusCode.NotFound)
                             }
-                        }else{
+                        } else {
                             call.respond(HttpStatusCode.BadRequest)
                         }
                     }
@@ -101,7 +101,7 @@ class RoutingV1(
                     post {
                         val receiveModel: CounterChangeDto = call.receive()
                         receiveModel.let { outerIt ->
-                            ideaService.changeCounter(outerIt,call.authentication.principal<User>()!!.name).let {
+                            ideaService.changeCounter(outerIt, call.authentication.principal<User>()!!.name).let {
                                 if (it != null) {
                                     call.respond(it)
                                 } else {

@@ -58,7 +58,7 @@ class UserService(
 
     suspend fun save(username: String, password: String):String {
         mutex.withLock {
-            repos.save(User(username = username, password = passwordEncoder.encode(password)))
+            repos.save(User(username = username, password = passwordEncoder.encode(password),author = Author(username, byteArrayOf(),0)))
             return tokenService.generate(repos.getByUsername(username)!!.id)
         }
     }

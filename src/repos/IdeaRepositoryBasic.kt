@@ -1,8 +1,6 @@
 package com.tribuna.repos
 
-import com.tribuna.models.CounterChangeDto
-import com.tribuna.models.Idea
-import com.tribuna.models.IdeaDto
+import com.tribuna.models.*
 import io.ktor.features.NotFoundException
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.sync.Mutex
@@ -20,8 +18,7 @@ class IdeaRepositoryBasic : IdeaRepository {
                     Date(),
                     null,
                     byteArrayOf(),
-                    mutableListOf("KitKat"),
-                    mutableListOf("Milka")
+                    mutableListOf(UserReaction("KitKat",true),UserReaction("Milka",false))
             ),
             Idea(
                     1,
@@ -30,8 +27,7 @@ class IdeaRepositoryBasic : IdeaRepository {
                     Date(),
                     null,
                     byteArrayOf(),
-                    mutableListOf("KitKat"),
-                    mutableListOf("Milka")
+                    mutableListOf(UserReaction("Mars",true),UserReaction("Milka",false))
             ),
             Idea(
                     2,
@@ -40,8 +36,7 @@ class IdeaRepositoryBasic : IdeaRepository {
                     Date(),
                     null,
                     byteArrayOf(),
-                    mutableListOf("KitKat"),
-                    mutableListOf("Milka")
+                    mutableListOf(UserReaction("KitKat",true),UserReaction("Twix",false))
             ),
             Idea(
                     3,
@@ -50,8 +45,7 @@ class IdeaRepositoryBasic : IdeaRepository {
                     Date(),
                     "https://animego.org/anime/vnuk-mudreca-k945",
                     byteArrayOf(),
-                    mutableListOf("KitKat"),
-                    mutableListOf("Milka")
+                    mutableListOf(UserReaction("Milka",true),UserReaction("KitKat",false))
             )
     )
 
@@ -75,8 +69,7 @@ class IdeaRepositoryBasic : IdeaRepository {
                 ideaDate = idea.ideaDate,
                 link = idea.link,
                 ideaDrawable = idea.ideaDrawable,
-                ideaSupportUsernames= mutableListOf(),
-                ideaHaterUsernames = mutableListOf()
+                ideaReaction= mutableListOf<UserReaction>()
         )
         idealist.add(ideaWithId)
         return HttpStatusCode.Accepted
