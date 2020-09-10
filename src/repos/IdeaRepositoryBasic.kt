@@ -75,6 +75,17 @@ class IdeaRepositoryBasic : IdeaRepository {
         return HttpStatusCode.Accepted
     }
 
+    override suspend fun getIdeaReactionsById(id: Int): List<UserReaction> {
+        val temp=idealist.find {
+            it.id==id
+        }
+        if(temp!=null){
+            return temp.ideaReaction.toList()
+        }else{
+            throw NotFoundException()
+        }
+    }
+
     override suspend fun deleteById(id: Int, authorName: String): HttpStatusCode {
         mutex.withLock {
             val findPost = idealist.find {

@@ -27,6 +27,10 @@ class UserService(
         return UserDto.generateModel(model)
     }
 
+    suspend fun getAutorsList(): List<Author>{
+        return getAutorsList()
+    }
+
     suspend fun changePassword(id: Int, input: PasswordChangeDto) {
         mutex.withLock {
             val model = repos.getById(id) ?: throw NotFoundException()

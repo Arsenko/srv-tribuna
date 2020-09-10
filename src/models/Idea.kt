@@ -18,7 +18,7 @@ class Idea(
             }
             return if(idea.id!=null) {
                 if (temp != null) {
-                    if (temp.promouted) {
+                    if (temp.promoted) {
                         IdeaDto(idea.id, idea.authorName, idea.ideaText, idea.ideaDate, idea.link, idea.ideaDrawable, true, false)
                     }else{
                         IdeaDto(idea.id, idea.authorName, idea.ideaText, idea.ideaDate, idea.link, idea.ideaDrawable, false, true)

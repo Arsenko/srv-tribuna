@@ -3,15 +3,18 @@ package com.tribuna.service
 import com.tribuna.repos.IdeaRepository
 import com.tribuna.models.CounterChangeDto
 import com.tribuna.models.IdeaDto
+import com.tribuna.models.UserReaction
 import io.ktor.http.HttpStatusCode
 
 class IdeaService(private val repos: IdeaRepository) {
     suspend fun getAll(username:String): List<IdeaDto?> {
-        val temp =repos.getAll(username)
-        return temp
+        return repos.getAll(username)
     }
     suspend fun getById(id:Int,username: String): IdeaDto? {
         return repos.getById(id,username)
+    }
+    suspend fun getIdeaReactionsById(id:Int):List<UserReaction>{
+        return repos.getIdeaReactionsById(id)
     }
     suspend fun deleteById(id:Int,authorName: String):HttpStatusCode{
         return repos.deleteById(id,authorName)

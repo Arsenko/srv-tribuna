@@ -1,11 +1,8 @@
 package com.tribuna.routing
 
-import com.tribuna.models.AuthenticationInDto
-import com.tribuna.models.CounterChangeDto
+import com.tribuna.models.*
 import com.tribuna.service.IdeaService
 import com.tribuna.service.UserService
-import com.tribuna.models.IdeaDto
-import com.tribuna.models.User
 import io.ktor.application.call
 import io.ktor.auth.authenticate
 import io.ktor.auth.authentication
@@ -110,6 +107,15 @@ class RoutingV1(
                             }
 
                         }
+                    }
+                }
+
+                route("api/v1/idea/authorReactions"){
+                    post{
+                        val recive:Int = call.receive()
+                        val listOfReactions=ideaService.getIdeaReactionsById(recive)
+                        val listOfAuthors=userService.getAutorsList()
+                        call.respond(UserReaction.generateListOfDto(listOfReactions,listOfAuthors))
                     }
                 }
             }
