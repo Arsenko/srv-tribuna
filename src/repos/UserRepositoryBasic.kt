@@ -56,4 +56,12 @@ class UserRepositoryBasic : UserRepository {
             }
         }
     }
+
+    override suspend fun getAuthorList(): List<Author> {
+        var result= mutableListOf<Author>()
+        for(i in users.indices){
+            users[i].author?.let { result.add(it) }
+        }
+        return result.toList()
+    }
 }

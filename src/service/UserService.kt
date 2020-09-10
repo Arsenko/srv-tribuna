@@ -27,8 +27,8 @@ class UserService(
         return UserDto.generateModel(model)
     }
 
-    suspend fun getAutorsList(): List<Author>{
-        return getAutorsList()
+    suspend fun getAutorList(): List<Author>{
+        return repos.getAuthorList()
     }
 
     suspend fun changePassword(id: Int, input: PasswordChangeDto) {

@@ -114,7 +114,7 @@ class RoutingV1(
                     post{
                         val recive:Int = call.receive()
                         val listOfReactions=ideaService.getIdeaReactionsById(recive)
-                        val listOfAuthors=userService.getAutorsList()
+                        val listOfAuthors=userService.getAutorList()
                         call.respond(UserReaction.generateListOfDto(listOfReactions,listOfAuthors))
                     }
                 }

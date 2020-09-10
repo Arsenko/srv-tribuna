@@ -10,4 +10,5 @@ interface UserRepository {
     suspend fun getByUsername(username: String): User?
     suspend fun save(item: User): UserDto
     suspend fun getAuthor(username: String): Author?
+    suspend fun getAuthorList():List<Author>
 }
