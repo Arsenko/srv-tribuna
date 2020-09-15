@@ -128,7 +128,7 @@ class IdeaRepositoryBasic : IdeaRepository {
                 temp.add(idealist[i])
             }
         }
-        return temp.map { Idea.generateModel(it, userName) }
+        return temp.toList().map { Idea.generateModel(it, userName) }
     }
 
     override suspend fun changeIdeaCounter(model: CounterChangeDto, login: String): IdeaDto {
