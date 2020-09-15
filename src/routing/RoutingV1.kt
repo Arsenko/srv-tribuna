@@ -122,7 +122,7 @@ class RoutingV1(
                 route("api/v1/idea/withAuthor"){
                     post{
                         val receive:String = call.receive()
-                        call.respond(ideaService.getIdeasWithAuthor(call.authentication.principal<User>()!!.name,receive))
+                        call.respond(ideaService.getIdeasWithAuthor(receive))
                     }
                 }
             }

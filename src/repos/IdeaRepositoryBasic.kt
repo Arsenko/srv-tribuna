@@ -121,14 +121,14 @@ class IdeaRepositoryBasic : IdeaRepository {
         }
     }
 
-    override suspend fun getIdeaWithAuthor(userName: String, authorName: String): List<IdeaDto> {
+    override suspend fun getIdeaWithAuthor(authorName: String): List<Idea> {
         var temp: MutableList<Idea> = mutableListOf()
         for (i in 0 until idealist.size) {
             if (idealist[i].authorName == authorName) {
                 temp.add(idealist[i])
             }
         }
-        return temp.toList().map { Idea.generateModel(it, userName) }
+        return temp.toList()
     }
 
     override suspend fun changeIdeaCounter(model: CounterChangeDto, login: String): IdeaDto {

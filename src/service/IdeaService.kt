@@ -2,6 +2,7 @@ package com.tribuna.service
 
 import com.tribuna.repos.IdeaRepository
 import com.tribuna.models.CounterChangeDto
+import com.tribuna.models.Idea
 import com.tribuna.models.IdeaDto
 import com.tribuna.models.UserReaction
 import io.ktor.http.HttpStatusCode
@@ -25,7 +26,7 @@ class IdeaService(private val repos: IdeaRepository) {
     suspend fun changeCounter(model: CounterChangeDto, login: String): IdeaDto? {
         return repos.changeIdeaCounter(model,login)
     }
-    suspend fun getIdeasWithAuthor(userName:String,authorName: String):List<IdeaDto>{
-        return repos.getIdeaWithAuthor(userName,authorName)
+    suspend fun getIdeasWithAuthor(authorName: String):List<Idea>{
+        return repos.getIdeaWithAuthor(authorName)
     }
 }
