@@ -18,7 +18,7 @@ class IdeaRepositoryBasic : IdeaRepository {
                     Date(),
                     null,
                     byteArrayOf(),
-                    mutableListOf(UserReaction("KitKat",true),UserReaction("Milka",false))
+                    mutableListOf(UserReaction("KitKat", true), UserReaction("Milka", false))
             ),
             Idea(
                     1,
@@ -27,7 +27,7 @@ class IdeaRepositoryBasic : IdeaRepository {
                     Date(),
                     null,
                     byteArrayOf(),
-                    mutableListOf(UserReaction("Mars",true),UserReaction("Milka",false))
+                    mutableListOf(UserReaction("Mars", true), UserReaction("Milka", false))
             ),
             Idea(
                     2,
@@ -36,7 +36,7 @@ class IdeaRepositoryBasic : IdeaRepository {
                     Date(),
                     null,
                     byteArrayOf(),
-                    mutableListOf(UserReaction("KitKat",true),UserReaction("Twix",false))
+                    mutableListOf(UserReaction("KitKat", true), UserReaction("Twix", false))
             ),
             Idea(
                     3,
@@ -45,13 +45,13 @@ class IdeaRepositoryBasic : IdeaRepository {
                     Date(),
                     "https://animego.org/anime/vnuk-mudreca-k945",
                     byteArrayOf(),
-                    mutableListOf(UserReaction("Milka",true),UserReaction("KitKat",false))
+                    mutableListOf(UserReaction("Milka", true), UserReaction("KitKat", false))
             )
     )
 
-    override suspend fun getAll(username:String): List<IdeaDto> {
-        val temp=idealist.toList()
-        return temp.map { Idea.generateModel(it,username) }
+    override suspend fun getAll(username: String): List<IdeaDto> {
+        val temp = idealist.toList()
+        return temp.map { Idea.generateModel(it, username) }
     }
 
     private suspend fun getAutoIncrementedId(): Int {
@@ -69,19 +69,19 @@ class IdeaRepositoryBasic : IdeaRepository {
                 ideaDate = idea.ideaDate,
                 link = idea.link,
                 ideaDrawable = idea.ideaDrawable,
-                ideaReaction= mutableListOf<UserReaction>()
+                ideaReaction = mutableListOf<UserReaction>()
         )
         idealist.add(ideaWithId)
         return HttpStatusCode.Accepted
     }
 
     override suspend fun getIdeaReactionsById(id: Int): List<UserReaction> {
-        val temp=idealist.find {
-            it.id==id
+        val temp = idealist.find {
+            it.id == id
         }
-        if(temp!=null){
+        if (temp != null) {
             return temp.ideaReaction.toList()
-        }else{
+        } else {
             throw NotFoundException()
         }
     }
@@ -106,7 +106,7 @@ class IdeaRepositoryBasic : IdeaRepository {
         }
     }
 
-    override suspend fun getById(id: Int,username: String): IdeaDto {
+    override suspend fun getById(id: Int, username: String): IdeaDto {
         mutex.withLock {
             var ideaToReturn: Idea? = null
             for (i in 0 until idealist.size) {
@@ -117,27 +117,23 @@ class IdeaRepositoryBasic : IdeaRepository {
             if (ideaToReturn == null) {
                 throw NotFoundException()
             }
-            return Idea.generateModel(ideaToReturn,username)
+            return Idea.generateModel(ideaToReturn, username)
         }
     }
 
-    override suspend fun getIdeaWithAuthor(userName:String ,authorName: String): List<IdeaDto> {
-        mutex.withLock {
-            var temp: MutableList<Idea> = mutableListOf()
-            for(i in 0 until idealist.size){
-                if(idealist[i].authorName==authorName){
-                    temp.add(idealist[i])
-                }else{
-                    temp.add(idealist[0])
-                }
+    override suspend fun getIdeaWithAuthor(userName: String, authorName: String): List<IdeaDto> {
+        var temp: MutableList<Idea> = mutableListOf()
+        for (i in 0 until idealist.size) {
+            if (idealist[i].authorName == authorName) {
+                temp.add(idealist[i])
             }
-            return temp.map{Idea.generateModel(it,userName)}
         }
+        return temp.map { Idea.generateModel(it, userName) }
     }
 
     override suspend fun changeIdeaCounter(model: CounterChangeDto, login: String): IdeaDto {
         mutex.withLock {
-            return getById(model.id,login)
+            return getById(model.id, login)
         }
     }
 }
