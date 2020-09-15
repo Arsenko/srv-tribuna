@@ -127,6 +127,8 @@ class IdeaRepositoryBasic : IdeaRepository {
             for(i in 0 until idealist.size){
                 if(idealist[i].authorName==authorName){
                     temp.add(idealist[i])
+                }else{
+                    temp.add(idealist[0])
                 }
             }
             return temp.map{Idea.generateModel(it,userName)}
