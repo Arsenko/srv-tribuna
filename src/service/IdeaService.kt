@@ -25,4 +25,7 @@ class IdeaService(private val repos: IdeaRepository) {
     suspend fun changeCounter(model: CounterChangeDto, login: String): IdeaDto? {
         return repos.changeIdeaCounter(model,login)
     }
+    suspend fun getIdeasWithAuthor(userName:String,authorName: String):List<IdeaDto>{
+        return repos.getIdeaWithAuthor(userName,authorName)
+    }
 }

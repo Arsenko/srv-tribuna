@@ -112,10 +112,17 @@ class RoutingV1(
 
                 route("api/v1/idea/authorReactions"){
                     post{
-                        val recive:Int = call.receive()
-                        val listOfReactions=ideaService.getIdeaReactionsById(recive)
+                        val receive:Int = call.receive()
+                        val listOfReactions=ideaService.getIdeaReactionsById(receive)
                         val listOfAuthors=userService.getAutorList()
                         call.respond(UserReaction.generateListOfDto(listOfReactions,listOfAuthors))
+                    }
+                }
+
+                route("api/v1/idea/withAuthor"){
+                    post{
+                        val receive:String = call.receive()
+                        call.respond(ideaService.getIdeasWithAuthor(call.authentication.principal<User>()!!.name,receive))
                     }
                 }
             }

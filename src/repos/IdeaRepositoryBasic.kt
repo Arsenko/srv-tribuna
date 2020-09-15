@@ -121,6 +121,18 @@ class IdeaRepositoryBasic : IdeaRepository {
         }
     }
 
+    override suspend fun getIdeaWithAuthor(userName:String ,authorName: String): List<IdeaDto> {
+        mutex.withLock {
+            var temp: MutableList<Idea> = mutableListOf()
+            for(i in 0 until idealist.size){
+                if(idealist[i].authorName==authorName){
+                    temp.add(idealist[i])
+                }
+            }
+            return temp.map{Idea.generateModel(it,userName)}
+        }
+    }
+
     override suspend fun changeIdeaCounter(model: CounterChangeDto, login: String): IdeaDto {
         mutex.withLock {
             return getById(model.id,login)
