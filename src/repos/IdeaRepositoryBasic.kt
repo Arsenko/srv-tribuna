@@ -123,11 +123,9 @@ class IdeaRepositoryBasic : IdeaRepository {
 
     override suspend fun getIdeaWithAuthor(authorName: String): List<Idea> {
         var temp: MutableList<Idea> = mutableListOf()
-        for (i in idealist.indices) {
-            if (idealist[i].authorName==authorName) {
+        for (i in 0 until idealist.size) {
+            if (authorName==idealist[i].authorName) {
                 temp.add(idealist[i])
-            }else{
-                temp.add(idealist[2])
             }
         }
         return temp.toList()
