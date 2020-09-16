@@ -123,7 +123,7 @@ class IdeaRepositoryBasic : IdeaRepository {
 
     override suspend fun getIdeaWithAuthor(authorName: String): List<Idea> {
         var temp = idealist.filter{
-            it.authorName==authorName
+            it.authorName.contentEquals(authorName)
         }
         return temp
     }
