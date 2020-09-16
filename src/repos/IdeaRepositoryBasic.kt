@@ -122,13 +122,10 @@ class IdeaRepositoryBasic : IdeaRepository {
     }
 
     override suspend fun getIdeaWithAuthor(authorName: String): List<Idea> {
-        var temp: MutableList<Idea> = mutableListOf()
-        for (i in 0 until idealist.size) {
-            if (authorName==idealist[i].authorName) {
-                temp.add(idealist[i])
-            }
+        var temp = idealist.filter{
+            it.authorName==authorName
         }
-        return temp.toList()
+        return temp
     }
 
     override suspend fun changeIdeaCounter(model: CounterChangeDto, login: String): IdeaDto {
