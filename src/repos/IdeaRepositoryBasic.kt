@@ -122,12 +122,11 @@ class IdeaRepositoryBasic : IdeaRepository {
     }
 
     override suspend fun getIdeaWithAuthor(authorName: String): List<Idea> {
-        mutex.withLock {
-            var temp = idealist.filter {
+        //mutex.withLock {
+            return idealist.filter {
                 it.authorName.contentEquals(authorName)
             }
-            return temp
-        }
+        //}
     }
 
     override suspend fun changeIdeaCounter(model: CounterChangeDto, login: String): IdeaDto {
