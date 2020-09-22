@@ -124,7 +124,7 @@ class IdeaRepositoryBasic : IdeaRepository {
     override suspend fun getIdeaWithAuthor(authorName: String): List<Idea> {
         //mutex.withLock {
             return idealist.filter {
-                it.authorName.contentEquals(authorName)
+                it.authorName.toString()==authorName.toString()
             }
         //}
     }
