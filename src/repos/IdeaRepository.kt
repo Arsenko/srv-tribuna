@@ -12,5 +12,5 @@ interface IdeaRepository{
     suspend fun getIdeaReactionsById(id:Int): List<UserReaction>
     suspend fun deleteById(id:Int,authorName:String):HttpStatusCode
     suspend fun getById(id:Int,username: String): IdeaDto
-    suspend fun getIdeaWithAuthor(authorName:String):List<Idea>
+    suspend fun getIdeaWithAuthor(authorName:String):MutableList<Idea>
 }
