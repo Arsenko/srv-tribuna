@@ -59,7 +59,7 @@ class UserRepositoryBasic : UserRepository {
 
     override suspend fun getAuthorList(): List<Author> {
         var result= mutableListOf<Author>()
-        for(i in users.indices){
+        for(i in 0 until users.size){
             users[i].author?.let { result.add(it) }
         }
         return result.toList()
