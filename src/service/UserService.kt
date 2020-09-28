@@ -1,5 +1,6 @@
 package com.tribuna.service
 
+import com.example.tribuna.models.ChangeProfile
 import com.tribuna.exceptions.AlreadyExistException
 import com.tribuna.exceptions.InvalidPasswordException
 import com.tribuna.exceptions.PasswordChangeException
@@ -73,5 +74,9 @@ class UserService(
         }
     }
 
-
+    suspend fun changeUserData(username:String,change: ChangeProfile):Boolean{
+        mutex.withLock {
+            return repos.changeData(username,change)
+        }
+    }
 }

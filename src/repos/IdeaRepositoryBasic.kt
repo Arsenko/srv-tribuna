@@ -124,7 +124,7 @@ class IdeaRepositoryBasic : IdeaRepository {
     override suspend fun getIdeaWithAuthor(authorName: String): MutableList<Idea> {
         var temp=mutableListOf<Idea>()
         val name=authorName.replace("\"","")//найти почему
-        if(idealist.any{
+        return if(idealist.any{
                     it.authorName==name
                 }) {
             for (i in 0 until idealist.size){
@@ -132,9 +132,9 @@ class IdeaRepositoryBasic : IdeaRepository {
                     temp.add(idealist[i])
                 }
             }
-            return temp
+            temp
         }else{
-            return mutableListOf()
+            mutableListOf()
         }
     }
 

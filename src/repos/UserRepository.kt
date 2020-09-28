@@ -1,5 +1,6 @@
 package com.tribuna.repos
 
+import com.example.tribuna.models.ChangeProfile
 import com.tribuna.models.Author
 import com.tribuna.models.User
 import com.tribuna.models.UserDto
@@ -11,4 +12,5 @@ interface UserRepository {
     suspend fun save(item: User): UserDto
     suspend fun getAuthor(username: String): Author?
     suspend fun getAuthorList():List<Author>
+    suspend fun changeData(username:String,change: ChangeProfile):Boolean
 }

@@ -1,5 +1,6 @@
 package com.tribuna.repos
 
+import com.example.tribuna.models.ChangeProfile
 import com.tribuna.models.Author
 import com.tribuna.models.User
 import com.tribuna.models.UserDto
@@ -9,7 +10,7 @@ import kotlinx.coroutines.sync.withLock
 
 class UserRepositoryBasic : UserRepository {
     private var index: Int = 3
-    private val users = mutableListOf(
+    private var users = mutableListOf(
             User(0, "Mars", "Mars",Author("Mars", byteArrayOf(), 4)),
             User(1, "Kitkat", "kitkat",Author("Kitkat", byteArrayOf(), -7)),
             User(2, "Milka", "Milka",Author("Milka", byteArrayOf(), 16)),
@@ -63,5 +64,24 @@ class UserRepositoryBasic : UserRepository {
             users[i].author?.let { result.add(it) }
         }
         return result.toList()
+    }
+
+    override suspend fun changeData(username:String,change: ChangeProfile):Boolean{
+        var result=false
+        for(i in 0 until users.size){
+            if(username==users[i].username && change.authorPass==users[i].password){
+                if(change.authorName!=null) {
+                    users[i].username = change.authorName
+                }
+                if(change.authorNewPass!=null){
+                    users[i].password = change.authorNewPass
+                }
+                if(change.authorDrawable!=null){
+                    users[i].author!!.authorDrawable=change.authorDrawable
+                }
+                result=true
+            }
+        }
+        return result
     }
 }
