@@ -1,5 +1,6 @@
 package com.tribuna.service
 
+import com.example.tribuna.models.IdeaData
 import com.tribuna.repos.IdeaRepository
 import com.tribuna.models.CounterChangeDto
 import com.tribuna.models.Idea
@@ -20,8 +21,8 @@ class IdeaService(private val repos: IdeaRepository) {
     suspend fun deleteById(id:Int,authorName: String):HttpStatusCode{
         return repos.deleteById(id,authorName)
     }
-    suspend fun addIdea(idea: IdeaDto):HttpStatusCode{
-        return repos.addIdea(idea)
+    suspend fun addIdea(idea: IdeaData, username:String):Boolean{
+        return repos.addIdea(idea,username)
     }
     suspend fun changeCounter(model: CounterChangeDto, login: String): IdeaDto? {
         return repos.changeIdeaCounter(model,login)

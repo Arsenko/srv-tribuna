@@ -1,6 +1,7 @@
 package com.tribuna.routing
 
 import com.example.tribuna.models.ChangeProfile
+import com.example.tribuna.models.IdeaData
 import com.tribuna.models.*
 import com.tribuna.service.IdeaService
 import com.tribuna.service.UserService
@@ -44,13 +45,6 @@ class RoutingV1(
                     get {
                         val respond = ideaService.getAll(call.authentication.principal<User>()!!.name)
                         call.respond(respond)
-                    }
-                }
-                route("/api/v1/idea/") {
-                    post {
-                        val input = call.receive<IdeaDto>()
-                        ideaService.addIdea(input)
-                        call.respond(HttpStatusCode.Accepted)
                     }
                 }
 
@@ -131,6 +125,19 @@ class RoutingV1(
                     post{
                         val receive: ChangeProfile = call.receive()
                         call.respond(userService.changeUserData(call.authentication.principal<User>()!!.name,receive))
+                    }
+                }
+
+                route("api/v1/idea/add"){
+                    post{
+                        val receive: IdeaData = call.receive()
+                        call.respond(ideaService.addIdea(receive,call.authentication.principal<User>()!!.name))
+                    }
+                }
+
+                route("api/v1/user/author"){
+                    get{
+                        call.respond(AuthorDto.generateDto(userService.getAuthorByUsername(call.authentication.principal<User>()!!.name)!!))
                     }
                 }
             }

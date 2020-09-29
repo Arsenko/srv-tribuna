@@ -1,5 +1,6 @@
 package com.tribuna.repos
 
+import com.example.tribuna.models.IdeaData
 import com.tribuna.models.*
 import io.ktor.features.NotFoundException
 import io.ktor.http.HttpStatusCode
@@ -59,20 +60,6 @@ class IdeaRepositoryBasic : IdeaRepository {
             id++
             return id
         }
-    }
-
-    override suspend fun addIdea(idea: IdeaDto): HttpStatusCode {
-        val ideaWithId = Idea(
-                id = getAutoIncrementedId(),
-                authorName = idea.authorName,
-                ideaText = idea.ideaText,
-                ideaDate = idea.ideaDate,
-                link = idea.link,
-                ideaDrawable = idea.ideaDrawable,
-                ideaReaction = mutableListOf<UserReaction>()
-        )
-        idealist.add(ideaWithId)
-        return HttpStatusCode.Accepted
     }
 
     override suspend fun getIdeaReactionsById(id: Int): List<UserReaction> {
@@ -142,5 +129,11 @@ class IdeaRepositoryBasic : IdeaRepository {
         mutex.withLock {
             return getById(model.id, login)
         }
+    }
+
+    override suspend fun addIdea(idea: IdeaData, username: String): Boolean {
+        val ideatoadd=Idea(getAutoIncrementedId(),username,idea.ideaText,idea.ideaDate,idea.link,idea.ideaDrawable, mutableListOf())
+        idealist.add(ideatoadd)
+        return true
     }
 }
