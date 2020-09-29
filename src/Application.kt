@@ -1,5 +1,7 @@
 package com.tribuna
 
+import com.tribuna.models.Author
+import com.tribuna.models.User
 import com.tribuna.repos.IdeaRepository
 import com.tribuna.repos.IdeaRepositoryBasic
 import com.tribuna.service.JWTTokenService
@@ -40,13 +42,17 @@ fun Application.module(testing: Boolean = false) {
             UserService(instance(), instance(), instance()).apply {
                 runBlocking {
                     this@apply.save("aaa", "111")
+                    this@apply.save("Mars", "Mars", Author("Mars", byteArrayOf(), 4))
+                    this@apply.save("Kitkat", "kitkat", Author("Kitkat", byteArrayOf(), -7))
+                    this@apply.save("Milka", "Milka", Author("Milka", byteArrayOf(), 16))
+                    this@apply.save("Twix", "Twix", Author("Twix", byteArrayOf(), -28))
                 }
             }
         }
         bind<RoutingV1>() with eagerSingleton {
             RoutingV1(
-                instance(),
-                instance()
+                    instance(),
+                    instance()
             )
         }
     }

@@ -68,6 +68,13 @@ class UserService(
         }
     }
 
+    suspend fun save(username: String,password: String,author: Author):String{
+        mutex.withLock {
+            repos.save(User(username = username, password = passwordEncoder.encode(password),author = author))
+            return tokenService.generate(repos.getByUsername(username)!!.id)
+        }
+    }
+
     suspend fun getAuthorByUsername(username: String):Author{
         mutex.withLock {
             return repos.getAuthor(username)
@@ -76,7 +83,13 @@ class UserService(
 
     suspend fun changeUserData(username:String,change: ChangeProfile):Boolean{
         mutex.withLock {
-            return repos.changeData(username,change)
+            val model = repos.getByUsername(username) ?: throw NotFoundException()
+            if (!passwordEncoder.matches(change.authorNewPass, model.password)) {
+                throw PasswordChangeException("Wrong password!")
+                return false
+            }else{
+                return repos.changeData(username,change)
+            }
         }
     }
 

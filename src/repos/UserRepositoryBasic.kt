@@ -9,7 +9,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 class UserRepositoryBasic : UserRepository {
-    private var index: Int = 3
+    private var index: Int = 0
     private var users = mutableListOf(
             User(0, "Mars", "Mars",Author("Mars", byteArrayOf(), 4)),
             User(1, "Kitkat", "kitkat",Author("Kitkat", byteArrayOf(), -7)),
@@ -67,7 +67,7 @@ class UserRepositoryBasic : UserRepository {
     override suspend fun changeData(username:String,change: ChangeProfile):Boolean{
         var result=false
         for(i in 0 until users.size){
-            if(username==users[i].username && change.authorPass==users[i].password){
+            if(username==users[i].username){
                 if(change.authorName!=null) {
                     users[i].username = change.authorName
                 }
