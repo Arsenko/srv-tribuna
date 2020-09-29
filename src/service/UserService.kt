@@ -79,4 +79,10 @@ class UserService(
             return repos.changeData(username,change)
         }
     }
+
+    suspend fun getByUsername(username: String):User?{
+        mutex.withLock {
+            return repos.getByUsername(username)
+        }
+    }
 }
