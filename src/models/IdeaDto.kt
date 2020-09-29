@@ -31,7 +31,7 @@ class IdeaDto(
                 IdeaDto(-1,AuthorDto.generateDto(author) , idea.ideaText, idea.ideaDate, idea.link, idea.ideaDrawable, false, false)
             }
         }
-        fun generateModel(idea: Idea, userName: String,author:List<Author>): IdeaDto {
+        fun generate(idea: Idea, userName: String,author:List<Author>): IdeaDto {
             val temp=idea.ideaReaction.find{
                 it.authorName==userName
             }
