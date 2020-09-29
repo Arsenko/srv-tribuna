@@ -31,5 +31,26 @@ class IdeaDto(
                 IdeaDto(-1,AuthorDto.generateDto(author) , idea.ideaText, idea.ideaDate, idea.link, idea.ideaDrawable, false, false)
             }
         }
+        fun generateModel(idea: Idea, userName: String,author:List<Author>): IdeaDto {
+            val temp=idea.ideaReaction.find{
+                it.authorName==userName
+            }
+            val authorFind=author.find{
+                it.authorName==userName
+            }
+            return if(idea.id!=null) {
+                if (temp != null) {
+                    if (temp.promoted) {
+                        IdeaDto(idea.id, AuthorDto.generateDto(authorFind!!),idea.ideaText, idea.ideaDate, idea.link, idea.ideaDrawable, true, false)
+                    }else{
+                        IdeaDto(idea.id, AuthorDto.generateDto(authorFind!!) , idea.ideaText, idea.ideaDate, idea.link, idea.ideaDrawable, false, true)
+                    }
+                }else{
+                    IdeaDto(idea.id, AuthorDto.generateDto(authorFind!!) , idea.ideaText, idea.ideaDate, idea.link, idea.ideaDrawable, false, false)
+                }
+            }else {
+                IdeaDto(-1,AuthorDto.generateDto(authorFind!!) , idea.ideaText, idea.ideaDate, idea.link, idea.ideaDrawable, false, false)
+            }
+        }
     }
 }

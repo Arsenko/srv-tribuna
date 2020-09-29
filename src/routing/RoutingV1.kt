@@ -44,9 +44,9 @@ class RoutingV1(
                 route("/api/v1/idea/") {
                     get {
                         val idealist = ideaService.getAll()
-                        val author = userService.getByUsername(call.authentication.principal<User>()!!.name)!!.author
+                        val authorlist = userService.getAutorList()
                         call.respond(idealist.map {
-                                IdeaDto.generateModel(it, call.authentication.principal<User>()!!.name, author!!)
+                                IdeaDto.generateModel(it, call.authentication.principal<User>()!!.name, authorlist)
                         })
                     }
                 }
