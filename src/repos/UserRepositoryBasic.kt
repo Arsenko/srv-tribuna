@@ -45,7 +45,7 @@ class UserRepositoryBasic : UserRepository {
         }
     }
 
-    override suspend fun getAuthor(username: String): Author? {
+    override suspend fun getAuthor(username: String): Author {
         mutex.withLock {
             val temp= users.find{
                 it.username==username
