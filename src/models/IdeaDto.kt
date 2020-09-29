@@ -31,22 +31,22 @@ class IdeaDto(
                 IdeaDto(-1,AuthorDto.generateDto(author) , idea.ideaText, idea.ideaDate, idea.link, idea.ideaDrawable, false, false)
             }
         }
-        fun generate(idea: Idea, userName: String,author:List<Author>): IdeaDto {
+        fun generate(idea: Idea, userName: String,authorlist:List<Author>): IdeaDto {
             val temp=idea.ideaReaction.find{
                 it.authorName==userName
             }
-            val authorFind=author.find{
+            val authorFind=authorlist.find{
                 it.authorName==userName
             }
-            return if(idea.id!=null) {
+            return if(idea.id!=null && authorFind!=null) {
                 if (temp != null) {
                     if (temp.promoted) {
-                        IdeaDto(idea.id, AuthorDto.generateDto(authorFind!!),idea.ideaText, idea.ideaDate, idea.link, idea.ideaDrawable, true, false)
+                        IdeaDto(idea.id, AuthorDto.generateDto(authorFind),idea.ideaText, idea.ideaDate, idea.link, idea.ideaDrawable, true, false)
                     }else{
-                        IdeaDto(idea.id, AuthorDto.generateDto(authorFind!!) , idea.ideaText, idea.ideaDate, idea.link, idea.ideaDrawable, false, true)
+                        IdeaDto(idea.id, AuthorDto.generateDto(authorFind) , idea.ideaText, idea.ideaDate, idea.link, idea.ideaDrawable, false, true)
                     }
                 }else{
-                    IdeaDto(idea.id, AuthorDto.generateDto(authorFind!!) , idea.ideaText, idea.ideaDate, idea.link, idea.ideaDrawable, false, false)
+                    IdeaDto(idea.id, AuthorDto.generateDto(authorFind) , idea.ideaText, idea.ideaDate, idea.link, idea.ideaDrawable, false, false)
                 }
             }else {
                 IdeaDto(-1,AuthorDto.generateDto(authorFind!!) , idea.ideaText, idea.ideaDate, idea.link, idea.ideaDrawable, false, false)
