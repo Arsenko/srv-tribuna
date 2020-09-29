@@ -11,7 +11,7 @@ class Idea(
         val ideaDrawable: ByteArray,
         val ideaReaction: MutableList<UserReaction>
 ) {
-    companion object {
+    /*companion object {
         fun generateModel(idea: Idea, userName: String): IdeaDto {
             val temp=idea.ideaReaction.find{
                 it.authorName==userName
@@ -30,5 +30,5 @@ class Idea(
                 IdeaDto(-1, idea.authorName, idea.ideaText, idea.ideaDate, idea.link, idea.ideaDrawable, false, false)
             }
         }
-    }
+    }*/
 }

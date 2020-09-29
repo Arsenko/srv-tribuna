@@ -43,23 +43,13 @@ class RoutingV1(
             authenticate {
                 route("/api/v1/idea/") {
                     get {
-                        val respond = ideaService.getAll(call.authentication.principal<User>()!!.name)
-                        call.respond(respond)
-                    }
-                }
-
-                route("/api/v1/idea/{id}") {
-                    get {
-                        val id = call.parameters["id"]?.toIntOrNull() ?: throw ParameterConversionException(
-                                "id",
-                                "Int"
-                        )
-                        val response = ideaService.getById(id, call.authentication.principal<User>()!!.name)
-                        if (response != null) {
-                            call.respond(response)
-                        } else {
-                            call.respond(HttpStatusCode.NotFound)
-                        }
+                        val idealist = ideaService.getAll()
+                        val author = userService.getAuthorByUsername(call.authentication.principal<User>()!!.name)
+                        call.respond(idealist.map {
+                            if (author != null) {
+                                IdeaDto.generateModel(it, call.authentication.principal<User>()!!.name, author)
+                            }
+                        })
                     }
                 }
 
@@ -76,15 +66,11 @@ class RoutingV1(
                 route("/api/v1/author/") {
                     get {
                         val username = call.authentication.principal<User>()!!.name
-                        if (username != null) {
-                            val temp = userService.getAuthorByUsername(username)
-                            if (temp != null) {
-                                call.respond(temp)
-                            } else {
-                                call.respond(HttpStatusCode.NotFound)
-                            }
+                        val temp = userService.getAuthorByUsername(username)
+                        if (temp != null) {
+                            call.respond(temp)
                         } else {
-                            call.respond(HttpStatusCode.BadRequest)
+                            call.respond(HttpStatusCode.NotFound)
                         }
                     }
                 }
@@ -92,10 +78,11 @@ class RoutingV1(
                 route("/api/v1/idea/changeCounter") {
                     post {
                         val receiveModel: CounterChangeDto = call.receive()
+                        val author=userService.getAuthorByUsername(call.authentication.principal<User>()!!.name)
                         receiveModel.let { outerIt ->
                             ideaService.changeCounter(outerIt, call.authentication.principal<User>()!!.name).let {
                                 if (it != null) {
-                                    call.respond(it)
+                                    call.respond(IdeaDto.generateModel(it,call.authentication.principal<User>()!!.name, author!!))
                                 } else {
                                     call.respond(HttpStatusCode.BadRequest)
                                 }
@@ -105,38 +92,38 @@ class RoutingV1(
                     }
                 }
 
-                route("api/v1/idea/authorReactions"){
-                    post{
-                        val receive:Int = call.receive()
-                        val listOfReactions=ideaService.getIdeaReactionsById(receive)
-                        val listOfAuthors=userService.getAutorList()
-                        call.respond(UserReaction.generateListOfDto(listOfReactions,listOfAuthors))
+                route("api/v1/idea/authorReactions") {
+                    post {
+                        val receive: Int = call.receive()
+                        val listOfReactions = ideaService.getIdeaReactionsById(receive)
+                        val listOfAuthors = userService.getAutorList()
+                        call.respond(UserReaction.generateListOfDto(listOfReactions, listOfAuthors))
                     }
                 }
 
-                route("api/v1/idea/withAuthor"){
-                    post{
-                        val receive:AuthorNameDto = call.receive()
+                route("api/v1/idea/withAuthor") {
+                    post {
+                        val receive: AuthorNameDto = call.receive()
                         call.respond(ideaService.getIdeasWithAuthor(receive.name))
                     }
                 }
 
-                route("api/v1/user/change"){
-                    post{
+                route("api/v1/user/change") {
+                    post {
                         val receive: ChangeProfile = call.receive()
-                        call.respond(userService.changeUserData(call.authentication.principal<User>()!!.name,receive))
+                        call.respond(userService.changeUserData(call.authentication.principal<User>()!!.name, receive))
                     }
                 }
 
-                route("api/v1/idea/add"){
-                    post{
+                route("api/v1/idea/add") {
+                    post {
                         val receive: IdeaData = call.receive()
-                        call.respond(ideaService.addIdea(receive,call.authentication.principal<User>()!!.name))
+                        call.respond(ideaService.addIdea(receive, call.authentication.principal<User>()!!.name))
                     }
                 }
 
-                route("api/v1/user/author"){
-                    get{
+                route("api/v1/user/author") {
+                    get {
                         call.respond(AuthorDto.generateDto(userService.getAuthorByUsername(call.authentication.principal<User>()!!.name)!!))
                     }
                 }

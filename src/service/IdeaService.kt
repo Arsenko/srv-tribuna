@@ -4,16 +4,12 @@ import com.example.tribuna.models.IdeaData
 import com.tribuna.repos.IdeaRepository
 import com.tribuna.models.CounterChangeDto
 import com.tribuna.models.Idea
-import com.tribuna.models.IdeaDto
 import com.tribuna.models.UserReaction
 import io.ktor.http.HttpStatusCode
 
 class IdeaService(private val repos: IdeaRepository) {
-    suspend fun getAll(username:String): List<IdeaDto?> {
-        return repos.getAll(username)
-    }
-    suspend fun getById(id:Int,username: String): IdeaDto? {
-        return repos.getById(id,username)
+    suspend fun getAll(): List<Idea> {
+        return repos.getAll()
     }
     suspend fun getIdeaReactionsById(id:Int):List<UserReaction>{
         return repos.getIdeaReactionsById(id)
@@ -24,7 +20,7 @@ class IdeaService(private val repos: IdeaRepository) {
     suspend fun addIdea(idea: IdeaData, username:String):Boolean{
         return repos.addIdea(idea,username)
     }
-    suspend fun changeCounter(model: CounterChangeDto, login: String): IdeaDto? {
+    suspend fun changeCounter(model: CounterChangeDto, login: String): Idea? {
         return repos.changeIdeaCounter(model,login)
     }
     suspend fun getIdeasWithAuthor(authorName: String):List<Idea>{

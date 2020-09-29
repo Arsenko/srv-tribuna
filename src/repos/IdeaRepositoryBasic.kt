@@ -50,9 +50,9 @@ class IdeaRepositoryBasic : IdeaRepository {
             )
     )
 
-    override suspend fun getAll(username: String): List<IdeaDto> {
+    override suspend fun getAll(): List<Idea> {
         val temp = idealist.toList()
-        return temp.map { Idea.generateModel(it, username) }
+        return temp //temp.map { Idea.generateModel(it, username) }
     }
 
     private suspend fun getAutoIncrementedId(): Int {
@@ -93,46 +93,37 @@ class IdeaRepositoryBasic : IdeaRepository {
         }
     }
 
-    override suspend fun getById(id: Int, username: String): IdeaDto {
-        mutex.withLock {
-            var ideaToReturn: Idea? = null
-            for (i in 0 until idealist.size) {
-                if (id == idealist[i].id) {
-                    ideaToReturn = idealist[i]
-                }
-            }
-            if (ideaToReturn == null) {
-                throw NotFoundException()
-            }
-            return Idea.generateModel(ideaToReturn, username)
-        }
-    }
-
     override suspend fun getIdeaWithAuthor(authorName: String): MutableList<Idea> {
-        var temp=mutableListOf<Idea>()
-        val name=authorName.replace("\"","")//найти почему
-        return if(idealist.any{
-                    it.authorName==name
+        var temp = mutableListOf<Idea>()
+        val name = authorName.replace("\"", "")//найти почему
+        return if (idealist.any {
+                    it.authorName == name
                 }) {
-            for (i in 0 until idealist.size){
-                if(idealist[i].authorName==name){
+            for (i in 0 until idealist.size) {
+                if (idealist[i].authorName == name) {
                     temp.add(idealist[i])
                 }
             }
             temp
-        }else{
+        } else {
             mutableListOf()
         }
     }
 
-    override suspend fun changeIdeaCounter(model: CounterChangeDto, login: String): IdeaDto {
+    override suspend fun changeIdeaCounter(model: CounterChangeDto, login: String): Idea {
         mutex.withLock {
-            return getById(model.id, login)
+            for(i in 0 until idealist[model.id].ideaReaction.size){
+                if(login==idealist[model.id].ideaReaction[i].authorName){
+                    idealist[model.id].ideaReaction.removeAt(i)
+                }
+            }
+            idealist[model.id].ideaReaction.add(UserReaction(login,model.increase,Date()))
+            return idealist[model.id]
         }
     }
 
     override suspend fun addIdea(idea: IdeaData, username: String): Boolean {
-        val ideatoadd=Idea(getAutoIncrementedId(),username,idea.ideaText,idea.ideaDate,idea.link,idea.ideaDrawable, mutableListOf())
+        val ideatoadd = Idea(getAutoIncrementedId(), username, idea.ideaText, idea.ideaDate, idea.link, idea.ideaDrawable, mutableListOf())
         idealist.add(ideatoadd)
         return true
     }
