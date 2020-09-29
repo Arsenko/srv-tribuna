@@ -46,9 +46,7 @@ class RoutingV1(
                         val idealist = ideaService.getAll()
                         val author = userService.getAuthorByUsername(call.authentication.principal<User>()!!.name)
                         call.respond(idealist.map {
-                            if (author != null) {
-                                IdeaDto.generateModel(it, call.authentication.principal<User>()!!.name, author)
-                            }
+                                IdeaDto.generateModel(it, call.authentication.principal<User>()!!.name, author!!)
                         })
                     }
                 }
