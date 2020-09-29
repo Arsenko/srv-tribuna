@@ -46,7 +46,7 @@ class RoutingV1(
                         val idealist = ideaService.getAll()
                         val authorlist = userService.getAutorList()
                         call.respond(idealist.map {
-                                IdeaDto.generate(it, call.authentication.principal<User>()!!.name.replace("\"", ""), authorlist)
+                            IdeaDto.generate(it, call.authentication.principal<User>()!!.name, authorlist)
                         })
                     }
                 }
@@ -65,22 +65,18 @@ class RoutingV1(
                     get {
                         val username = call.authentication.principal<User>()!!.name
                         val temp = userService.getAuthorByUsername(username)
-                        if (temp != null) {
-                            call.respond(temp)
-                        } else {
-                            call.respond(HttpStatusCode.NotFound)
-                        }
+                        call.respond(temp)
                     }
                 }
 
                 route("/api/v1/idea/changeCounter") {
                     post {
                         val receiveModel: CounterChangeDto = call.receive()
-                        val author=userService.getAuthorByUsername(call.authentication.principal<User>()!!.name)
+                        val author = userService.getAuthorByUsername(call.authentication.principal<User>()!!.name)
                         receiveModel.let { outerIt ->
                             ideaService.changeCounter(outerIt, call.authentication.principal<User>()!!.name).let {
                                 if (it != null) {
-                                    call.respond(IdeaDto.generateModel(it,call.authentication.principal<User>()!!.name, author!!))
+                                    call.respond(IdeaDto.generateModel(it, call.authentication.principal<User>()!!.name, author))
                                 } else {
                                     call.respond(HttpStatusCode.BadRequest)
                                 }
@@ -122,7 +118,7 @@ class RoutingV1(
 
                 route("api/v1/user/author") {
                     get {
-                        call.respond(AuthorDto.generateDto(userService.getAuthorByUsername(call.authentication.principal<User>()!!.name)!!))
+                        call.respond(AuthorDto.generateDto(userService.getAuthorByUsername(call.authentication.principal<User>()!!.name)))
                     }
                 }
             }

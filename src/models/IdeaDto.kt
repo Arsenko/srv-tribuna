@@ -35,8 +35,11 @@ class IdeaDto(
             val temp=idea.ideaReaction.find{
                 it.authorName==userName
             }
-            val authorFind=authorlist.find{
-                it.authorName==userName
+            var authorFind:Author?=null
+            for(i in 0 until authorlist.size){
+                if(idea.authorName.equals(authorlist[i].authorName,true)){
+                    authorFind=authorlist[i]
+                }
             }
             return if(idea.id!=null && authorFind!=null) {
                 if (temp != null) {
@@ -49,7 +52,7 @@ class IdeaDto(
                     IdeaDto(idea.id, AuthorDto.generateDto(authorFind) , idea.ideaText, idea.ideaDate, idea.link, idea.ideaDrawable, false, false)
                 }
             }else {
-                IdeaDto(-1,AuthorDto.generateDto(authorFind!!) , idea.ideaText, idea.ideaDate, idea.link, idea.ideaDrawable, false, false)
+                IdeaDto(-1,AuthorDto.generateDto(authorlist[0]) , idea.ideaText, idea.ideaDate, idea.link, idea.ideaDrawable, false, false)
             }
         }
     }
