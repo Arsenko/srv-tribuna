@@ -46,7 +46,7 @@ class RoutingV1(
                         val idealist = ideaService.getAll()
                         val authorlist = userService.getAutorList()
                         call.respond(idealist.map {
-                                IdeaDto.generateModel(it, call.authentication.principal<User>()!!.name, authorlist)
+                                IdeaDto.generateModel(it, call.authentication.principal<User>()!!.name.replace("\"", ""), authorlist)
                         })
                     }
                 }
