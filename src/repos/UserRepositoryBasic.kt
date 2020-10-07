@@ -52,7 +52,7 @@ class UserRepositoryBasic : UserRepository {
                     return users[i].author!!
                 }
             }
-            return users[2].author!!
+            throw NotFoundException()
         }
     }
 
