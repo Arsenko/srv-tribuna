@@ -29,11 +29,16 @@ class UserRepositoryBasic : UserRepository {
         }
     }
 
-    override suspend fun getByUsername(username: String): User? {
+    override suspend fun getByUsername(username: String): User {
         mutex.withLock {
             val name = username.replace("\"", "")
-            return users.find {
+            val userfind = users.find {
                 it.username == username
+            }
+            if(userfind!=null){
+                return userfind
+            }else{
+                throw NotFoundException()
             }
         }
     }
