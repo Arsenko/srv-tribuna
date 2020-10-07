@@ -10,11 +10,11 @@ import kotlinx.coroutines.sync.withLock
 
 class UserRepositoryBasic : UserRepository {
     private var index: Int = 0
-    private var users = mutableListOf(
+    private var users = mutableListOf<User>(/*
             User(0, "Mars", "Mars",Author("Mars", byteArrayOf(), 4)),
             User(1, "Kitkat", "kitkat",Author("Kitkat", byteArrayOf(), -7)),
             User(2, "Milka", "Milka",Author("Milka", byteArrayOf(), 16)),
-            User(3, "Twix", "Twix",Author("Twix", byteArrayOf(), -28))
+            User(3, "Twix", "Twix",Author("Twix", byteArrayOf(), -28))*/
     )
     private val mutex = Mutex()
     override suspend fun getAll(): List<User> {
