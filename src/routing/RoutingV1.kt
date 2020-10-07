@@ -118,7 +118,7 @@ class RoutingV1(
 
                 route("api/v1/user/author") {
                     get {
-                        call.respond(AuthorDto.generateDto(userService.getAuthorByUsername("Milka")))
+                        call.respond(AuthorDto.generateDto(userService.getAuthorByUsername(call.authentication.principal<User>()!!.name)))
                     }
                 }
             }
