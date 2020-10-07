@@ -33,7 +33,7 @@ class UserRepositoryBasic : UserRepository {
         mutex.withLock {
             val name = username.replace("\"", "")
             return users.find {
-                it.username == username
+                it.username == name
             }
         }
     }
