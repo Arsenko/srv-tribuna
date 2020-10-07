@@ -45,17 +45,6 @@ class UserRepositoryBasic : UserRepository {
         }
     }
 
-    override suspend fun getAuthor(username: String): Author {
-        mutex.withLock {
-            for(i in 0 until users.size){
-                if(username.equals(users[i].author!!.authorName,true)){
-                    return users[i].author!!
-                }
-            }
-            throw NotFoundException()
-        }
-    }
-
     override suspend fun getAuthorList(): List<Author> {
         var result= mutableListOf<Author>()
         for(i in 0 until users.size){

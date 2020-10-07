@@ -77,7 +77,7 @@ class UserService(
 
     suspend fun getAuthorByUsername(username: String):Author{
         mutex.withLock {
-            return repos.getAuthor(username)
+            return repos.getByUsername(username)!!.author!!
         }
     }
 

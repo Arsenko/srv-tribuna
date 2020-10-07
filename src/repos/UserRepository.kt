@@ -10,7 +10,6 @@ interface UserRepository {
     suspend fun getById(id: Int): User?
     suspend fun getByUsername(username: String): User?
     suspend fun save(item: User): UserDto
-    suspend fun getAuthor(username: String): Author
     suspend fun getAuthorList():List<Author>
     suspend fun changeData(username:String,change: ChangeProfile):Boolean
 }
