@@ -121,7 +121,7 @@ class RoutingV1(
                 route("api/v1/user/author") {
                     post {
                         val receive:String=call.receive()
-                        userService.getAuthorByUsername(receive)?.let { it1 -> call.respond(it1) }
+                        userService.getAuthorByUsername(receive)?.let { it1 -> call.respond(AuthorDto.generateDto(it1)) }
                     }
                 }
             }
