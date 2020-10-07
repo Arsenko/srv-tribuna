@@ -54,10 +54,10 @@ class UserService(
     }
 
     suspend fun registration(input: AuthenticationInDto): AuthenticationOutDto?{
-        return if(repos.getByUsername(input.username)!=null){
+        if(repos.getByUsername(input.username)!=null){
             throw AlreadyExistException("username already exist")
         }else {
-            this.authenticate(input)
+            return AuthenticationOutDto(this.save(input.username,input.password))
         }
     }
 
