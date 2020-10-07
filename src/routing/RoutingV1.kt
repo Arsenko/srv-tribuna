@@ -65,7 +65,9 @@ class RoutingV1(
                     get {
                         val username = call.authentication.principal<User>()!!.name
                         val temp = userService.getAuthorByUsername(username)
-                        call.respond(temp)
+                        if (temp != null) {
+                            call.respond(temp)
+                        }
                     }
                 }
 
@@ -76,7 +78,7 @@ class RoutingV1(
                         receiveModel.let { outerIt ->
                             ideaService.changeCounter(outerIt, call.authentication.principal<User>()!!.name).let {
                                 if (it != null) {
-                                    call.respond(IdeaDto.generateModel(it, call.authentication.principal<User>()!!.name, author))
+                                    call.respond(IdeaDto.generateModel(it, call.authentication.principal<User>()!!.name, author!!))
                                 } else {
                                     call.respond(HttpStatusCode.BadRequest)
                                 }
