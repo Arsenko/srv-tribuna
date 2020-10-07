@@ -41,7 +41,6 @@ fun Application.module(testing: Boolean = false) {
         bind<UserService>() with eagerSingleton {
             UserService(instance(), instance(), instance()).apply {
                 runBlocking {
-                    this@apply.save("aaa", "111", Author("aaa", byteArrayOf(),0))
                     this@apply.save("Mars", "Mars", Author("Mars", byteArrayOf(), 4))
                     this@apply.save("Kitkat", "kitkat", Author("Kitkat", byteArrayOf(), -7))
                     this@apply.save("Milka", "Milka", Author("Milka", byteArrayOf(), 16))
