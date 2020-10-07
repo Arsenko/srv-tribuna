@@ -119,8 +119,9 @@ class RoutingV1(
                 }
 
                 route("api/v1/user/author") {
-                    get {
-                        call.respond(call.authentication.principal<User>()!!.name)
+                    post {
+                        val receive:String=call.receive()
+                        userService.getAuthorByUsername(receive)?.let { it1 -> call.respond(it1) }
                     }
                 }
             }
